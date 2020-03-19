@@ -860,6 +860,7 @@ typedef unsigned long ck_mechanism_type_t;
 #define CKM_AES_CFB1			(0x2108UL)
 
 #define CKM_VENDOR_DEFINED		((unsigned long) (1UL << 31))
+#define CKM_DES2_DUKPT_DATA (CKM_VENDOR_DEFINED|0x614)
 
 /* Ammendments */
 #define CKM_SHA224			(0x255UL)

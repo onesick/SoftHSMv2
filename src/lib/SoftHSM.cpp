@@ -7012,6 +7012,7 @@ CK_RV SoftHSM::C_DeriveKey
 		case CKM_DES3_CBC_ENCRYPT_DATA:
 		case CKM_AES_ECB_ENCRYPT_DATA:
 		case CKM_AES_CBC_ENCRYPT_DATA:
+		case CKM_DES2_DUKPT_DATA:
 			break;
 
 		default:
@@ -7122,7 +7123,8 @@ CK_RV SoftHSM::C_DeriveKey
 	    pMechanism->mechanism == CKM_DES3_ECB_ENCRYPT_DATA ||
 	    pMechanism->mechanism == CKM_DES3_CBC_ENCRYPT_DATA ||
 	    pMechanism->mechanism == CKM_AES_ECB_ENCRYPT_DATA ||
-	    pMechanism->mechanism == CKM_AES_CBC_ENCRYPT_DATA)
+	    pMechanism->mechanism == CKM_AES_CBC_ENCRYPT_DATA ||
+		pMechanism->mechanism == CKM_DES2_DUKPT_DATA)
 	{
 		// Check key class and type
 		CK_KEY_TYPE baseKeyType = key->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED);
@@ -7145,6 +7147,9 @@ CK_RV SoftHSM::C_DeriveKey
 			return CKR_KEY_TYPE_INCONSISTENT;
 		if (pMechanism->mechanism == CKM_AES_CBC_ENCRYPT_DATA &&
 		    baseKeyType != CKK_AES)
+			return CKR_KEY_TYPE_INCONSISTENT;
+		if (pMechanism->mechanism == CKM_DES2_DUKPT_DATA &&
+			baseKeyType != CKK_DES2)
 			return CKR_KEY_TYPE_INCONSISTENT;
 
 		return this->deriveSymmetric(hSession, pMechanism, hBaseKey, pTemplate, ulCount, phKey, keyType, isOnToken, isPrivate);
