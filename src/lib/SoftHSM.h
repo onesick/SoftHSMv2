@@ -52,7 +52,8 @@
 #include "DHPrivateKey.h"
 #include "GOSTPublicKey.h"
 #include "GOSTPrivateKey.h"
-
+#include "DukptData.h"
+#define CKM_DES2_DUKPT_DATA     (0x80000614UL)
 #include <memory>
 
 class SoftHSM

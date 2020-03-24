@@ -69,6 +69,7 @@
 #include "HandleManager.h"
 #include "P11Objects.h"
 #include "odd.h"
+#include "DukptData.h"
 
 #if defined(WITH_OPENSSL)
 #include "OSSLCryptoFactory.h"

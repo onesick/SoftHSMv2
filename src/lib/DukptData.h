@@ -1,0 +1,1 @@
+#define CKM_DES2_DUKPT_DATA     (0x80000614UL)
