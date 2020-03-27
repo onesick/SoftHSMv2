@@ -641,6 +641,7 @@ void DeriveTests::symDerive(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hKey, C
 		case CKM_DES_ECB_ENCRYPT_DATA:
 		case CKM_DES3_ECB_ENCRYPT_DATA:
 		case CKM_AES_ECB_ENCRYPT_DATA:
+		case CKM_DES2_DUKPT_DATA:
 			param1.pData = &data[0];
 			param1.ulLen = sizeof(data);
 			mechanism.pParameter = &param1;
@@ -811,6 +812,7 @@ void DeriveTests::testSymDerive()
 	symDerive(hSessionRW,hKeyDes2,hDerive,CKM_DES3_ECB_ENCRYPT_DATA,CKK_DES);
 #endif
 	symDerive(hSessionRW,hKeyDes2,hDerive,CKM_DES3_ECB_ENCRYPT_DATA,CKK_DES2);
+	symDerive(hSessionRW,hKeyDes2,hDerive,CKM_DES2_DUKPT_DATA,CKK_DES2);
 	symDerive(hSessionRW,hKeyDes2,hDerive,CKM_DES3_ECB_ENCRYPT_DATA,CKK_DES3);
 	symDerive(hSessionRW,hKeyDes2,hDerive,CKM_DES3_ECB_ENCRYPT_DATA,CKK_AES);
 	symDerive(hSessionRW,hKeyDes3,hDerive,CKM_DES3_ECB_ENCRYPT_DATA,CKK_GENERIC_SECRET);

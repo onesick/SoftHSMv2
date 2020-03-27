@@ -70,7 +70,7 @@
 #include "P11Objects.h"
 #include "odd.h"
 #include "DukptData.h"
-
+#define CKM_DES2_DUKPT_DATA     (0x80000614UL)
 #if defined(WITH_OPENSSL)
 #include "OSSLCryptoFactory.h"
 #else
@@ -736,6 +736,7 @@ void SoftHSM::prepareSupportedMecahnisms(std::map<std::string, CK_MECHANISM_TYPE
 	t["CKM_DES3_CBC_PAD"]		= CKM_DES3_CBC_PAD;
 	t["CKM_DES3_ECB_ENCRYPT_DATA"]	= CKM_DES3_ECB_ENCRYPT_DATA;
 	t["CKM_DES3_CBC_ENCRYPT_DATA"]	= CKM_DES3_CBC_ENCRYPT_DATA;
+	t["CKM_DES2_DUKPT_DATA"] =  CKM_DES2_DUKPT_DATA;
 	t["CKM_DES3_CMAC"]		= CKM_DES3_CMAC;
 	t["CKM_AES_KEY_GEN"]		= CKM_AES_KEY_GEN;
 	t["CKM_AES_ECB"]		= CKM_AES_ECB;
@@ -1128,6 +1129,7 @@ CK_RV SoftHSM::C_GetMechanismInfo(CK_SLOT_ID slotID, CK_MECHANISM_TYPE type, CK_
 		case CKM_DES3_CBC_ENCRYPT_DATA:
 		case CKM_AES_ECB_ENCRYPT_DATA:
 		case CKM_AES_CBC_ENCRYPT_DATA:
+		case CKM_DES2_DUKPT_DATA:
 			// Key size is not in use
 			pInfo->ulMinKeySize = 0;
 			pInfo->ulMaxKeySize = 0;
@@ -11062,7 +11064,7 @@ CK_RV SoftHSM::deriveSymmetric
 	ByteString data;
 
 	if ((pMechanism->mechanism == CKM_DES_ECB_ENCRYPT_DATA ||
-	    pMechanism->mechanism == CKM_DES3_ECB_ENCRYPT_DATA) &&
+	    pMechanism->mechanism == CKM_DES3_ECB_ENCRYPT_DATA || pMechanism->mechanism == CKM_DES2_DUKPT_DATA) &&
 	    pMechanism->ulParameterLen == sizeof(CK_KEY_DERIVATION_STRING_DATA))
 	{
 		CK_BYTE_PTR pData = CK_KEY_DERIVATION_STRING_DATA_PTR(pMechanism->pParameter)->pData;
@@ -11261,6 +11263,11 @@ CK_RV SoftHSM::deriveSymmetric
 			break;
 #endif
 		case CKM_DES3_ECB_ENCRYPT_DATA:
+			algo = SymAlgo::DES3;
+			mode = SymMode::ECB;
+			bb = 7;
+			break;
+		case CKM_DES2_DUKPT_DATA:
 			algo = SymAlgo::DES3;
 			mode = SymMode::ECB;
 			bb = 7;
